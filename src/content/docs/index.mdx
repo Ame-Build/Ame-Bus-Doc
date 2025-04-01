@@ -1,36 +1,32 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
+title: Ame Bus
+description: Modern microservices framework based on NATS for Rust.
 template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: Modern microservices framework based on NATS for Rust.
   image:
-    file: ../../assets/houston.webp
+    file: ../../assets/ame-build-logo.svg
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: Get started
+      link: /introduction/welcome
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
-      icon: external
-      variant: minimal
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## Next steps
+## Features
 
 <CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
+	<Card title="Safe" icon="seti:rust">
+        With rust's type system and memory safety, you can easily build safe and reliable microservices.
 	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
+	<Card title="Simple" icon="seti:svg">
+        Let microservice be how it should be. Stop creating thousands of API endpoints.
 	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
+	<Card title="Extensible" icon="puzzle">
+        Route message anyhow you want with NATS's powerful routing ability. Ship fancy features with rust's ecosystem.
 	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
+	<Card title="Fast" icon="rocket">
+        Not only running fast, but also easy to build and scale. Protobuf and JSON are out of box.
 	</Card>
 </CardGrid>

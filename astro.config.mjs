@@ -7,22 +7,48 @@ import starlightThemeRapide from 'starlight-theme-rapide'
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'My Docs',
+			title: 'Ame Bus',
 			social: {
-				github: 'https://github.com/withastro/starlight',
+				github: 'https://github.com/Ame-Build/ame-bus',
 			},
 			sidebar: [
 				{
-					label: 'Guides',
+					label: 'Introduction',
 					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
-					],
+						'introduction/welcome',
+						'introduction/what_is_nats',
+						'introduction/what_is_ame_bus',
+					]
 				},
 				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
+					label: 'Core Concepts',
+					items: [
+						'core_concepts/processor',
+						'core_concepts/layer',
+						'core_concepts/subject_path',
+						'core_concepts/service',
+						'core_concepts/consumer',
+						'core_concepts/error',
+						'core_concepts/kv_store',
+					]
 				},
+				{
+					label: 'Design Patterns',
+					autogenerate: {directory: 'design_patterns'}
+				},
+				{
+					label: 'Integration',
+					autogenerate: {directory: 'integration'}
+				},
+				{
+					label: 'API Reference',
+					items: [
+						{
+							label: 'docs.rs',
+							link: 'https://docs.rs/ame-bus/latest/ame_bus/'
+						}
+					]
+				}
 			],
 			plugins: [starlightThemeRapide()],
 		}),
