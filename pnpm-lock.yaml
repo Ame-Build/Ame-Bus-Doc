@@ -20,9 +20,6 @@ importers:
       starlight-theme-flexoki:
         specifier: ^0.1.0
         version: 0.1.0(@astrojs/starlight@0.32.5(astro@5.5.6(rollup@4.38.0)(typescript@5.8.2)))
-      starlight-theme-rapide:
-        specifier: ^0.4.0
-        version: 0.4.0(@astrojs/starlight@0.32.5(astro@5.5.6(rollup@4.38.0)(typescript@5.8.2)))
 
 packages:
 
@@ -1585,12 +1582,6 @@ packages:
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0}
     peerDependencies:
       '@astrojs/starlight': '>=0.32'
-
-  starlight-theme-rapide@0.4.0:
-    resolution: {integrity: sha512-go2JEA3p1CNo3zqhS1pDkhCXAJNG8O7sX7KdIebae+ogaAndFRKXFtXhmw+9O/CWM785Vje6mGIXlwLer0faLQ==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      '@astrojs/starlight': '>=0.32.0'
 
   stream-replace-string@2.0.0:
     resolution: {integrity: sha512-TlnjJ1C0QrmxRNrON00JvaFFlNh5TTG00APw23j74ET7gkQpTASi6/L2fuiav8pzK715HXtUeClpBTw2NPSn6w==}
@@ -4061,10 +4052,6 @@ snapshots:
   space-separated-tokens@2.0.2: {}
 
   starlight-theme-flexoki@0.1.0(@astrojs/starlight@0.32.5(astro@5.5.6(rollup@4.38.0)(typescript@5.8.2))):
-    dependencies:
-      '@astrojs/starlight': 0.32.5(astro@5.5.6(rollup@4.38.0)(typescript@5.8.2))
-
-  starlight-theme-rapide@0.4.0(@astrojs/starlight@0.32.5(astro@5.5.6(rollup@4.38.0)(typescript@5.8.2))):
     dependencies:
       '@astrojs/starlight': 0.32.5(astro@5.5.6(rollup@4.38.0)(typescript@5.8.2))
 
