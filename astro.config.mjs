@@ -50,7 +50,9 @@ export default defineConfig({
 					]
 				}
 			],
-			plugins: [starlightThemeFlexoki()],
+			plugins: [starlightThemeFlexoki({
+				accentColor: "blue"
+			})],
 		}),
 	],
 });
