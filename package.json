@@ -20,5 +20,8 @@
       "esbuild",
       "sharp"
     ]
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
