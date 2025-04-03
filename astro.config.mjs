@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import starlightThemeRapide from 'starlight-theme-rapide'
+import starlightThemeFlexoki from 'starlight-theme-flexoki'
 
 // https://astro.build/config
 export default defineConfig({
@@ -50,7 +50,7 @@ export default defineConfig({
 					]
 				}
 			],
-			plugins: [starlightThemeRapide()],
+			plugins: [starlightThemeFlexoki()],
 		}),
 	],
 });
