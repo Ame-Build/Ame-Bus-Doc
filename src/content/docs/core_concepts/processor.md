@@ -109,9 +109,11 @@ impl Processor<
 ```
 
 :::note
-We use `impl Future<Output = O> + Send + '_` for the return type because `async fn` will desugar to `impl Future<Output = O>` which is not `Send`, and you cannot add extra bound (like `Send`) to it. [More information](https://blog.rust-lang.org/2023/12/21/async-fn-rpit-in-traits.html)
+We use `impl Future<Output = O> + Send + '_` for the return type because `async fn` will desugar to `impl Future<Output = O>` which is not `Send`, and you cannot add extra bound (like `Send`) to it. 
 
-The async block usually is `Send`, and the usage of that async function usually needs `Send`, we have to use `impl Future<Output = O> + Send + '_`.
+[More information](https://blog.rust-lang.org/2023/12/21/async-fn-rpit-in-traits.html)
+
+The async block usually is `Send`, and the usage of that async function usually needs `Send`, so we have to use `impl Future<Output = O> + Send + '_`.
 
 But you don't need to use `impl Future<Output = O> + Send + '_` in your code, since `async fn` will desugar to `impl Future<Output = O> + Send + '_` for you.
 :::
