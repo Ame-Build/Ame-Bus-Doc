@@ -14,7 +14,7 @@ Processors provide several benefits in a functional microservice architecture:
 
 1. **Separation of concerns** - Each processor has a single responsibility
 2. **Dependency injection** - Dependencies are explicitly included in the processor implementation
-3. **Testability** - Easy to test in isolation
+3. **Reusability** - Processors can be easily reused across different parts of the system
 4. **Composability** - Processors can be composed and chained together
 5. **Type safety** - Input and output types are clearly defined
 
