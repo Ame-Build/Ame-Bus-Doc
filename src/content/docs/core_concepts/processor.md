@@ -2,8 +2,6 @@
 title: Processor
 ---
 
-## What is a Processor?
-
 A Processor is one of the fundamental building blocks in Ame Bus. In essence, a Processor is a durable async operation handler - think of it as a persistent async function with dependencies bundled in.
 
 While Rust's async closures are still unstable, a Processor achieves similar functionality through a trait-based approach. It encapsulates both state (dependencies) and behavior (the processing logic) in a single abstraction.

@@ -2,8 +2,6 @@
 title: Subject Path
 ---
 
-## What is a Subject Path?
-
 A Subject Path (`NatsSubjectPath`) is a fundamental type in Ame Bus that represents NATS subject routing paths. It's a structured way to represent dot-separated NATS subjects (e.g., "foo.bar.baz").
 
 ## Usage
