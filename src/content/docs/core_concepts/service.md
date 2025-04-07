@@ -61,6 +61,8 @@ let service = NatsService::new(
 service.run(request_stream).await;
 ```
 
+You still need to get the request stream and combine it manually before running the service.
+
 ## Routing Messages
 
 Ame Bus provides a `service_route!` macro for routing messages to appropriate endpoints:
