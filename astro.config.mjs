@@ -16,6 +16,7 @@ export default defineConfig({
 					label: 'Introduction',
 					items: [
 						'introduction/welcome',
+						'introduction/before_you_start',
 						'introduction/what_is_nats',
 						'introduction/what_is_ame_bus',
 					]
