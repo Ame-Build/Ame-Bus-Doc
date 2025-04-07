@@ -78,6 +78,49 @@ let result = service_route![
 ];
 ```
 
+## Making RPC Calls
+
+Ame Bus provides `NatsRpcCallTrait` for making type-safe RPC calls to NATS services. This trait allows you to define request types that can be used to call services and receive strongly-typed responses:
+
+```rust
+use ame_bus::core::message::NatsRpcCallTrait;
+
+#[derive(ByteSerialize)]
+struct CreateUserRequest {
+    username: String,
+    email: String,
+}
+
+#[derive(ByteDeserialize)]
+struct CreateUserResponse {
+    user_id: String,
+}
+
+impl NatsRpcCallTrait<CreateUserResponse> for CreateUserRequest {
+    fn subject() -> (NatsSubjectPath, PhantomData<CreateUserResponse>) {
+        (vec!["user", "create"].into(), PhantomData)
+    }
+}
+
+// Making the RPC call
+let request = CreateUserRequest {
+    username: "john_doe".to_string(),
+    email: "john@example.com".to_string(),
+};
+
+let response: CreateUserResponse = request.call(&nats_client).await?;
+```
+
+The trait provides:
+- Type-safe request/response handling
+- Static subject routing
+- Automatic serialization/deserialization
+- Error handling for network and serialization issues
+
+:::tip
+A single request type can implement `NatsRpcCallTrait` multiple times with different response types, allowing it to be used with different services.
+:::
+
 ## Best Practices
 
 1. **Subject Organization**
