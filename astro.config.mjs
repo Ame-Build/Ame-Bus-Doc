@@ -7,9 +7,9 @@ import starlightThemeFlexoki from 'starlight-theme-flexoki'
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'Ame Bus',
+			title: 'Shizuku',
 			social: {
-				github: 'https://github.com/Ame-Build/ame-bus',
+				github: 'https://github.com/suitsu31-club/shizuku',
 			},
 			sidebar: [
 				{
@@ -18,7 +18,7 @@ export default defineConfig({
 						'introduction/welcome',
 						'introduction/before_you_start',
 						'introduction/what_is_nats',
-						'introduction/what_is_ame_bus',
+						'introduction/what_is_shizuku',
 					]
 				},
 				{
@@ -46,7 +46,7 @@ export default defineConfig({
 					items: [
 						{
 							label: 'docs.rs',
-							link: 'https://docs.rs/ame-bus/latest/ame_bus/'
+							link: 'https://docs.rs/shizuku/latest/shizuku/'
 						}
 					]
 				}

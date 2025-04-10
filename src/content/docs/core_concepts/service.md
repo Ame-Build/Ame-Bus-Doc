@@ -2,7 +2,7 @@
 title: NATS Service
 ---
 
-NATS Service in Ame Bus provides a high-level abstraction for building request-response style services using NATS. It's designed to handle RPC-like interactions while leveraging NATS's powerful load-balancing and service discovery features.
+NATS Service in Shizuku provides a high-level abstraction for building request-response style services using NATS. It's designed to handle RPC-like interactions while leveraging NATS's powerful load-balancing and service discovery features.
 
 ## Core Components
 
@@ -11,7 +11,7 @@ NATS Service in Ame Bus provides a high-level abstraction for building request-r
 The `FinalNatsProcessor` trait is the foundation of NATS Services. It processes NATS messages and returns bytes as responses:
 
 ```rust
-use ame_bus::service_rpc::FinalNatsProcessor;
+use shizuku::service_rpc::FinalNatsProcessor;
 use async_nats::Message;
 use bytes::Bytes;
 
@@ -33,7 +33,7 @@ impl FinalNatsProcessor for MyService {} // Implement the marker trait
 The `ServiceEndpoint` trait marks a processor as a service endpoint with a specific subject:
 
 ```rust
-use ame_bus::service_rpc::ServiceEndpoint;
+use shizuku::service_rpc::ServiceEndpoint;
 
 struct CreateUserEndpoint {
     db: DatabaseConnection,
@@ -49,7 +49,7 @@ impl ServiceEndpoint for CreateUserEndpoint {
 The `NatsService` struct ties everything together:
 
 ```rust
-use ame_bus::service_rpc::NatsService;
+use shizuku::service_rpc::NatsService;
 
 let service = NatsService::new(
     my_processor,
@@ -65,10 +65,10 @@ You still need to get the request stream and combine it manually before running 
 
 ## Routing Messages
 
-Ame Bus provides a `service_route!` macro for routing messages to appropriate endpoints:
+Shizuku provides a `service_route!` macro for routing messages to appropriate endpoints:
 
 ```rust
-use ame_bus::service_route;
+use shizuku::service_route;
 
 let result = service_route![
     message,
@@ -80,10 +80,10 @@ let result = service_route![
 
 ## Making RPC Calls
 
-Ame Bus provides `NatsRpcCallTrait` for making type-safe RPC calls to NATS services. This trait allows you to define request types that can be used to call services and receive strongly-typed responses:
+Shizuku provides `NatsRpcCallTrait` for making type-safe RPC calls to NATS services. This trait allows you to define request types that can be used to call services and receive strongly-typed responses:
 
 ```rust
-use ame_bus::core::message::NatsRpcCallTrait;
+use shizuku::core::message::NatsRpcCallTrait;
 
 #[derive(ByteSerialize)]
 struct CreateUserRequest {
@@ -144,7 +144,7 @@ A single request type can implement `NatsRpcCallTrait` multiple times with diffe
 Here's a complete example of a NATS service:
 
 ```rust
-use ame_bus::service_rpc::{FinalNatsProcessor, NatsService, ServiceEndpoint};
+use shizuku::service_rpc::{FinalNatsProcessor, NatsService, ServiceEndpoint};
 
 struct UserService {
     db: &'static DatabaseConnection,

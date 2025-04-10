@@ -2,7 +2,7 @@
 title: Processor
 ---
 
-A Processor is one of the fundamental building blocks in Ame Bus. In essence, a Processor is a durable async operation handler - think of it as a persistent async function with dependencies bundled in.
+A Processor is one of the fundamental building blocks in Shizuku. In essence, a Processor is a durable async operation handler - think of it as a persistent async function with dependencies bundled in.
 
 While Rust's async closures are still unstable, a Processor achieves similar functionality through a trait-based approach. It encapsulates both state (dependencies) and behavior (the processing logic) in a single abstraction.
 
@@ -49,10 +49,10 @@ The key difference is that `FinalProcessor` takes an `Arc<Self>` instead of `&se
 
 ## Implementation Guide
 
-Processors are central to Ame Bus's components:
+Processors are central to Shizuku's components:
 
-- **NATS Services** require a `FinalProcessor<async_nats::Message, Result<bytes::Bytes, ame_bus::error::Error>>`
-- **JetStream Consumers** require a `Processor<async_nats::Message, Result<(), ame_bus::error::Error>>`
+- **NATS Services** require a `FinalProcessor<async_nats::Message, Result<bytes::Bytes, shizuku::error::Error>>`
+- **JetStream Consumers** require a `Processor<async_nats::Message, Result<(), shizuku::error::Error>>`
 
 For best practice, processors should:
 
@@ -120,7 +120,7 @@ But you don't need to use `impl Future<Output = O> + Send + '_` in your code, si
 
 `FinalProcessor<I,O>` is not recommended for most use cases.
 
-Here's an example of implement `FinalNatsProcessor` which requires `FinalProcessor<Message, Result<Bytes, ame_bus::error::Error>>`:
+Here's an example of implement `FinalNatsProcessor` which requires `FinalProcessor<Message, Result<Bytes, shizuku::error::Error>>`:
 
 ```rust
 /// nest processors inside FinalProcessor

@@ -2,7 +2,7 @@
 title: Subject Path
 ---
 
-A Subject Path (`NatsSubjectPath`) is a fundamental type in Ame Bus that represents NATS subject routing paths. It's a structured way to represent dot-separated NATS subjects (e.g., "foo.bar.baz").
+A Subject Path (`NatsSubjectPath`) is a fundamental type in Shizuku that represents NATS subject routing paths. It's a structured way to represent dot-separated NATS subjects (e.g., "foo.bar.baz").
 
 ## Usage
 
@@ -16,7 +16,7 @@ Subject paths are used to:
 You can create subject paths in several ways:
 
 ```rust
-use ame_bus::core::message::NatsSubjectPath;
+use shizuku::core::message::NatsSubjectPath;
 
 // From string slices
 let path = NatsSubjectPath::from(vec!["foo", "bar", "baz"]);
@@ -41,7 +41,7 @@ let path = NatsSubjectPath::from(vec![
 Subject paths work closely with `SubjectMatcher` for pattern matching. The `subject_matcher!` macro provides an easy way to create matchers:
 
 ```rust
-use ame_bus::subject_matcher;
+use shizuku::subject_matcher;
 
 let path = NatsSubjectPath::from(vec!["foo", "bar", "baz"]);
 

@@ -2,7 +2,7 @@
 title: Layer
 ---
 
-A Layer is a crucial component in Ame Bus that wraps around a Processor, enabling middleware-like functionality. It provides a clean way to handle cross-cutting concerns by intercepting and potentially modifying both the input and output of a Processor.
+A Layer is a crucial component in Shizuku that wraps around a Processor, enabling middleware-like functionality. It provides a clean way to handle cross-cutting concerns by intercepting and potentially modifying both the input and output of a Processor.
 
 Conceptually, a Layer is a monad transformer that can perform operations before and after the execution of a Processor, without the Processor needing to be aware of these operations. This allows for a clear separation between business logic (in Processors) and cross-cutting concerns (in Layers).
 
@@ -46,7 +46,7 @@ The lifetime bounds `'wrapper` and `'processor` with `'processor: 'wrapper` ensu
 
 ## Built-in Layers
 
-Ame Bus provides several built-in Layers for common patterns:
+Shizuku provides several built-in Layers for common patterns:
 
 ### `RetryLayer`
 

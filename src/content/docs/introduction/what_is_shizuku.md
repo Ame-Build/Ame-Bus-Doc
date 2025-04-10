@@ -1,10 +1,10 @@
 ---
-title: What is Ame Bus
+title: What is Shizuku
 ---
 
-Ame Bus is a microservices framework based on NATS for Rust. It provides a simple and easy-to-use API for building microservices. It also provides a powerful routing system for NATS.
+Shizuku is a microservices framework based on NATS for Rust. It provides a simple and easy-to-use API for building microservices. It also provides a powerful routing system for NATS.
 
-Ame Bus is trying to challenge Spring Boot with rust's ecosystem.
+Shizuku is trying to challenge Spring Boot with rust's ecosystem.
 
 ## Compared to other frameworks
 

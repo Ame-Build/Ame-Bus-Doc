@@ -2,7 +2,7 @@
 title: JetStream Consumer
 ---
 
-JetStream Consumer in Ame Bus provides a high-level abstraction for consuming messages from NATS JetStream. It includes a powerful routing system and automatic acknowledgment handling.
+JetStream Consumer in Shizuku provides a high-level abstraction for consuming messages from NATS JetStream. It includes a powerful routing system and automatic acknowledgment handling.
 
 ## Core Components
 
@@ -11,7 +11,7 @@ JetStream Consumer in Ame Bus provides a high-level abstraction for consuming me
 The `FinalJetStreamProcessor` trait is the foundation of JetStream Consumers. It processes NATS messages and returns a Result indicating success or failure:
 
 ```rust
-use ame_bus::jetstream::FinalJetStreamProcessor;
+use shizuku::jetstream::FinalJetStreamProcessor;
 use async_nats::Message;
 
 struct MyConsumer {
@@ -37,7 +37,7 @@ impl FinalJetStreamProcessor for MyConsumer {} // Implement the marker trait
 The `JetStreamConsumer` struct handles message consumption and acknowledgment:
 
 ```rust
-use ame_bus::jetstream::JetStreamConsumer;
+use shizuku::jetstream::JetStreamConsumer;
 
 let consumer = JetStreamConsumer::new(
     my_processor,
@@ -53,10 +53,10 @@ You still need to get the message stream and combine it manually before running 
 
 ## Message Routing
 
-Ame Bus provides a powerful `jet_route!` macro for routing JetStream messages:
+Shizuku provides a powerful `jet_route!` macro for routing JetStream messages:
 
 ```rust
-use ame_bus::jet_route;
+use shizuku::jet_route;
 
 impl Processor<Message, Result<(), Error>> for OrderService {
     async fn process(&self, input: Message) -> Result<(), Error> {
@@ -101,8 +101,8 @@ The routing system supports several pattern types:
 Here's a full example of a JetStream consumer with routing:
 
 ```rust
-use ame_bus::jetstream::{FinalJetStreamProcessor, JetStreamConsumer};
-use ame_bus::{jet_route, Error, Processor};
+use shizuku::jetstream::{FinalJetStreamProcessor, JetStreamConsumer};
+use shizuku::{jet_route, Error, Processor};
 use async_nats::Message;
 
 struct OrderService {
@@ -146,7 +146,7 @@ consumer.run(message_stream).await;
 When you need to publish events from your processors, use the `JetStreamMessageSendTrait`:
 
 ```rust
-use ame_bus::core::message::JetStreamMessageSendTrait;
+use shizuku::core::message::JetStreamMessageSendTrait;
 
 #[derive(ByteSerialize)]
 struct OrderPaidEvent {
@@ -174,7 +174,7 @@ Or, if the subject is static, after `StaticSubjectMessage` is implemented, the `
 
 ## Comparison with Traditional Message Queues
 
-JetStream Consumers in Ame Bus offer several advantages:
+JetStream Consumers in Shizuku offer several advantages:
 - Built-in subject-based routing with pattern matching
 - Automatic acknowledgment handling
 - Integrated error tracing
