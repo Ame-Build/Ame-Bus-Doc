@@ -34,8 +34,8 @@ export default defineConfig({
 					]
 				},
 				{
-					label: 'Design Patterns',
-					autogenerate: {directory: 'design_patterns'}
+					label: 'Best Practices',
+					autogenerate: {directory: 'best_practices'}
 				},
 				{
 					label: 'Integration',

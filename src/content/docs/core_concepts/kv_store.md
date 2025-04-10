@@ -138,3 +138,44 @@ Always handle these errors appropriately in your application code.
 
 The KV Store does not encrypt data by default. If you need to store sensitive information (more sensitive than database passwords), implement your own encryption before storing the data.
 
+## Configuration Storage Example
+
+KV Store is ideal for storing application configuration like database credentials. Here's a recommended pattern:
+
+```rust
+use shizuku::kv::{KeyValue, StaticKeyIndexedValue};
+use serde::{Serialize, Deserialize};
+use shizuku::JsonByteDes;
+
+#[derive(Serialize, Deserialize, JsonByteDes)]
+struct DatabaseConfig {
+    url: String,
+    username: String,
+    password: String,
+    max_connections: u32,
+}
+
+impl StaticKeyIndexedValue for DatabaseConfig {
+    fn key() -> String {
+        "config.database".to_string()
+    }
+}
+
+async fn initialize_database(store: &Store) -> Result<DatabasePool, Error> {
+    // Read config from KV store
+    let config = match DatabaseConfig::read_from(store, DatabaseConfig::key()).await? {
+        Some(config) => config,
+        None => return Err(Error::ConfigNotFound),
+    };
+
+    // Initialize database connection pool
+    DatabasePool::connect(&config.url)
+        .with_credentials(&config.username, &config.password)
+        .with_max_connections(config.max_connections)
+        .build()
+        .await
+}
+```
+
+Since KV Store is distributed, you can update the configuration on any node and all other nodes will receive the updates. While KV Store doesn't encrypt data by default, it's secure enough for database credentials. For more sensitive data, implement your own encryption.
+
