@@ -35,7 +35,7 @@ export default defineConfig({
 				},
 				{
 					label: 'Best Practices',
-					autogenerate: {directory: 'best_practices'}
+					autogenerate: {directory: 'best_practice'}
 				},
 				{
 					label: 'Integration',
