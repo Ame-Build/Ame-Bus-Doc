@@ -130,55 +130,59 @@ For local development, you can run NATS in a single-node configuration to simula
 :::
 
 
-# Shizuku Components (SZKC)
+## Recommended Component Structure
 
-Backend components examples for business.
+We recommend structuring your Shizuku-based applications with the following component interfaces. 
 
-## Components structure
+:::note
+In real applications, components should be implemented as Rust modules (`mod`), not as separate crates.
 
-All the components have these public parts:
+But it's normal to create separate crates for each component in components implementation examples because it's easier to copy the code.
+:::
 
-- **Events**: Asynchronous event. When something happens inside the component, the event will be sent to other components.
-- **Hooks**: Event handlers. Listening events of other components and do something that require accessing private context.
-- **RPC**: **External** function calls. Expose interface for representing layer and external system.
-- **Shared**: For performance reason, some part of the component's context should be "shared" to other components.
+### Component Interfaces
+
+Each component in your application should expose these public interfaces:
+
+- **Events**: Asynchronous notifications emitted when significant state changes occur within a component. These events are published to other components that may need to react to these changes.
+- **Hooks**: Event handlers that subscribe to events from other components and perform actions that require access to the component's private context.
+- **RPC**: External function calls that expose interfaces for presentation layers and external systems to interact with the component.
+- **Shared**: Carefully selected parts of the component's context that are made available to other components for performance optimization.
 
 ### Events & Hooks
 
-Events and hooks are working like ports or process channels. They are an asynchronous way to communicate between components.
+Events and hooks function similar to inter-process communication channels. They provide an asynchronous communication mechanism between components.
 
-As you know, the communicating method between process are channels or shared memory. Events and hooks are like channels.
+In the context of distributed systems, events and hooks serve a similar purpose to IPC channels between processes, enabling loosely coupled communication.
 
-If you need a synchronous way to communicate between components, you should know:
+When considering synchronous communication between components:
 
-1. Unless you have a good reason, you should use asynchronous way.
-2. To keep code clean and performance, you should never use rpc to communicate between components.
-3. Thus, you should use shared part to communicate between components synchronously.
+1. Prefer asynchronous communication patterns unless you have a specific requirement for synchronous operations.
+2. For maintainability and performance reasons, avoid using RPC for inter-component communication.
+3. When synchronous communication is necessary, use the shared interfaces to interact between components.
 
-After an event is triggered, it will be sent to NATS JetStream as a message. If there is no consumer, messages will be accumulated.
-To avoid that, a default empty hook is created for each event in the component.
+When an event is triggered, it's published to NATS JetStream as a message. To prevent message accumulation when there are no active consumers, each component should create a default empty hook for its events.
 
-Events are serialized and deserialized by proto buffers.
+Events use Protocol Buffers for serialization and deserialization.
 
-Events can have headers.
+Events support custom headers for metadata.
 
-Events can have dynamic subject.
+Events can utilize dynamic subjects for flexible routing.
 
 ### RPC
 
-RPC is for representing layer and external system. It is not the way to communicate between components.
+RPC interfaces are designed for presentation layers and external systems to interact with components. They are not intended for inter-component communication.
 
-RPC also have headers, but unlike events, subjects are static.
+Like events, RPC calls support headers, but unlike events, RPC subjects are statically defined.
 
 ### Shared
 
-Like shared memory between processes, this provides a way to share data between components.
+The shared interface provides controlled access to component data, similar to how shared memory works between processes.
 
-Data or memory are not shared actually, the data is stored in KV store, database or etc. With dependency injection, the data
-can be accessed by other components like shared memory.
+Rather than directly sharing memory, data is typically stored in a KV store, database, or other persistence layer. Through dependency injection, this data can be accessed by other components in a manner similar to shared memory.
 
-Shared part usually contains:
+The shared interface typically includes:
 
-- Entities: including entities in database or in kv store.
-- Functions: some helper functions or RPCs' implementation.
-- Objects: data transfer objects.
+- **Entities**: Data models representing records in databases or KV stores.
+- **Functions**: Utility functions and implementations of RPC handlers.
+- **Objects**: Data transfer objects for structured information exchange.
