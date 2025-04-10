@@ -53,7 +53,7 @@ async fn test_order_processing() {
     
     // Test real workflow
     let service = OrderService::new(nats.client(), db.connection());
-    let result = service.process_order(test_order()).await;
+    let result = service.process(test_order()).await;
     
     assert!(result.is_ok());
     assert!(db.order_exists(test_order.id).await);
@@ -116,25 +116,50 @@ async fn process_order(db: &DB, order: Order) -> Result<OrderId, Error> {
 }
 ```
 
-Split into pure processors:
+Split into pure functions and processors:
 ```rust
-// Pure logic - easily testable without mocks
-impl Processor<(Order, Plan), Result<ValidatedOrder, Error>> for OrderValidator {
-    async fn process(&self, (order, plan): (Order, Plan)) -> Result<ValidatedOrder, Error> {
-        // Only business rules, no I/O
-        validate_order_against_plan(&order, &plan)
+// Good: Pure validation logic separate from Processor
+fn validate_order_against_plan(order: &Order, plan: &Plan) -> Result<ValidatedOrder, Error> {
+    // Pure business rules
+    if order.items.len() > plan.max_items {
+        return Err(Error::LimitExceeded);
+    }
+    if order.total() > plan.max_amount {
+        return Err(Error::AmountExceeded);
+    }
+    Ok(ValidatedOrder::new(order.clone()))
+}
+
+// Database operations processor
+struct DataReadProcessor {
+    db: DatabaseConnection,
+}
+
+impl Processor<Order, Result<(Order, Plan), Error>> for DataReadProcessor {
+    async fn process(&self, order: Order) -> Result<(Order, Plan), Error> {
+        let plan = self.db.get_plan(order.plan_id).await?;
+        Ok((order, plan))
     }
 }
 
-// I/O happens only in the final layer
-impl FinalProcessor<Order, Result<OrderId, Error>> for OrderService {
-    async fn process(state: Arc<Self>, order: Order) -> Result<OrderId, Error> {
-        let plan = state.db.get_plan(order.plan_id).await?;
-        let validated = state.validator.process((order, plan)).await?;
-        state.db.save_order(validated).await
+impl Processor<Order, Result<OrderId, Error>> for DataReadProcessor  {
+    async fn process(&self, order: Order) -> Result<OrderId, Error> {
+        // Get data
+        let (order, plan): (Order, Plan) = self.process(order).await?;
+        
+        // Pure validation
+        let validated = validate_order_against_plan(&order, &plan)?;
+        
+        // Save
+        self.db.save_order(validated).await
     }
 }
 ```
+
+:::note
+**Processor state reuse**: In many scenarios, you can reuse the same processor instance across multiple requests. 
+This is possible because processors are designed to be stateless.
+:::
 
 This approach means:
 - Business logic can be tested without mocks

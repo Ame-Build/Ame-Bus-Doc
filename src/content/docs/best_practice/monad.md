@@ -18,7 +18,12 @@ A monadic processor chain allows you to:
 
 ### Custom Result Types
 
-Define result types that carry the specific information needed for your use case:
+Here's an example of implementing a feature access control system using monadic processors. The system needs to:
+1. Look up a user's subscription plan from the database
+2. Determine what features they can access based on their plan
+3. Enforce usage limits for those features
+
+This is a common pattern in SaaS applications where different subscription tiers have different feature sets and usage quotas. Let's break this down into composable processors:
 
 ```rust
 struct PlanInfo {
