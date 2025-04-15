@@ -19,6 +19,7 @@ export default defineConfig({
 						'introduction/before_you_start',
 						'introduction/what_is_nats',
 						'introduction/what_is_shizuku',
+						'introduction/install',
 					]
 				},
 				{
