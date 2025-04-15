@@ -4,6 +4,8 @@ title: KV Store
 
 KV Store in Shizuku provides a high-level abstraction over NATS JetStream's Key-Value store. It offers features like atomic operations, distributed locking, and structured data storage.
 
+For more information, see [API Reference](https://docs.rs/shizuku/latest/shizuku/kv/index.html)
+
 ## Basic Operations
 
 The KV Store functionality is built around the `KeyValue` trait, which provides basic operations for storing and retrieving data. Here's how to use it with dynamic keys:

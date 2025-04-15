@@ -36,7 +36,26 @@ Shizuku provides Protocol Buffers serialization support through the `protobuf` f
     }
     ```
 
-4. Create a module file to include the generated code (e.g., `src/user.rs`):
+4. Create your `.proto` files in the specified directory (e.g., `src/proto/user.proto`):
+
+    ```protobuf
+    // src/proto/user.proto
+    syntax = "proto3";
+
+    package user;
+
+    message User {
+        string id = 1;
+        string name = 2;
+        string email = 3;
+    }
+    ```
+
+    :::note
+    Make sure to create the proto directory and include it in your version control system.
+    :::
+
+5. Create a module file to include the generated code (e.g., `src/user.rs`):
 
     ```rust
     // src/user.rs
@@ -59,26 +78,6 @@ Shizuku provides Protocol Buffers serialization support through the `protobuf` f
     protobuf_ser!(CreateUserRequest);
     protobuf_des!(CreateUserResponse);
     ```
-
-5. Create your `.proto` files in the specified directory (e.g., `src/proto/user.proto`):
-
-    ```protobuf
-    // src/proto/user.proto
-    syntax = "proto3";
-
-    package user;
-
-    message User {
-        string id = 1;
-        string name = 2;
-        string email = 3;
-    }
-    ```
-
-    :::note
-    Make sure to create the proto directory and include it in your version control system.
-    :::
-
 </Steps>
 
 ## Usage
