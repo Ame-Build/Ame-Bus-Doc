@@ -15,7 +15,7 @@ rust fundamentals:
 - async rust: `Future` and `tokio`.
 - ownership and life circle: how to use less `.clone()` and `Arc`.
 - pointers: the difference between `&[T]`, `Box<[T]>`, `Vec<T>`, `Arc<[T]>`.
-- syscall optimization(optional), especially how to decrease the heap allocation.
+- memory optimization(optional), especially how to decrease the heap allocation.
 
 architecture:
 
