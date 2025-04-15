@@ -15,27 +15,25 @@ struct JwtLayer {
     jwt_secret: String,
 }
 
-impl<I, O, P> Layer<I, O, P> for JwtLayer 
+impl<I, O, P> Layer<I, O, P> for JwtLayer
 where
     P: Processor<I, O> + Send + Sync,
     I: AsRef<Message> + Clone + Send + Sync,
     O: Send,
 {
-    fn wrap<'w, 'p>(
+    async fn wrap<'w, 'p>(
         &'w self,
         processor: &'p P,
         input: I,
-    ) -> impl Future<Output = O> + Send + 'w + 'p
+    ) -> O
     where
         I: 'w + 'p,
         'p: 'w,
     {
-        async move {
-            let message = input.as_ref();
-            let token = extract_token(message)?;
-            validate_jwt(token, &self.jwt_secret)?;
-            processor.process(input).await
-        }
+        let message = input.as_ref();
+        let token = extract_token(message)?;
+        validate_jwt(token, &self.jwt_secret)?;
+        processor.process(input).await
     }
 }
 ```
@@ -49,26 +47,24 @@ struct PermissionLayer {
     acl_client: Arc<AclClient>,
 }
 
-impl<I, O, P> Layer<I, O, P> for PermissionLayer 
+impl<I, O, P> Layer<I, O, P> for PermissionLayer
 where
     P: Processor<I, O> + Send + Sync,
     I: HasResourceId + Clone + Send + Sync,
     O: Send,
 {
-    fn wrap<'w, 'p>(
+    async fn wrap<'w, 'p>(
         &'w self,
         processor: &'p P,
         input: I,
-    ) -> impl Future<Output = O> + Send + 'w + 'p
+    ) -> O
     where
         I: 'w + 'p,
         'p: 'w,
     {
-        async move {
-            let resource_id = input.resource_id();
-            self.acl_client.check_permission(resource_id).await?;
-            processor.process(input).await
-        }
+        let resource_id = input.resource_id();
+        self.acl_client.check_permission(resource_id).await?;
+        processor.process(input).await
     }
 }
 ```
@@ -80,25 +76,23 @@ Input validation middleware:
 ```rust
 struct ValidationLayer;
 
-impl<I, O, P> Layer<I, O, P> for ValidationLayer 
+impl<I, O, P> Layer<I, O, P> for ValidationLayer
 where
     P: Processor<I, O> + Send + Sync,
     I: Validate + Clone + Send + Sync,
     O: Send,
 {
-    fn wrap<'w, 'p>(
+    async fn wrap<'w, 'p>(
         &'w self,
         processor: &'p P,
         input: I,
-    ) -> impl Future<Output = O> + Send + 'w + 'p
+    ) -> O
     where
         I: 'w + 'p,
         'p: 'w,
     {
-        async move {
-            input.validate()?;
-            processor.process(input).await
-        }
+        input.validate()?;
+        processor.process(input).await
     }
 }
 ```
@@ -154,20 +148,18 @@ impl Processor<Message, Result<Bytes, Error>> for MyService {
 - Avoid swallowing errors in middleware
 
 ```rust
-impl<I, O, P> Layer<I, Result<O, Error>, P> for AuthLayer 
+impl<I, O, P> Layer<I, Result<O, Error>, P> for AuthLayer
 where
     P: Processor<I, Result<O, Error>>,
 {
-    fn wrap<'w, 'p>(
+    async fn wrap<'w, 'p>(
         &'w self,
         processor: &'p P,
         input: I,
-    ) -> impl Future<Output = Result<O, Error>> + Send + 'w + 'p {
-        async move {
-            match self.authenticate(&input).await {
-                Ok(_) => processor.process(input).await,
-                Err(e) => Err(Error::PreProcessError(e.into())),
-            }
+    ) -> Result<O, Error> {
+        match self.authenticate(&input).await {
+            Ok(_) => processor.process(input).await,
+            Err(e) => Err(Error::PreProcessError(e.into())),
         }
     }
 }
@@ -249,13 +241,13 @@ Write comprehensive tests for your layers:
 async fn test_jwt_layer() {
     let layer = JwtLayer::new("secret");
     let processor = MockProcessor::new();
-    
+
     // Test valid token
     let result = layer
         .wrap(&processor, create_test_input("valid_token"))
         .await;
     assert!(result.is_ok());
-    
+
     // Test invalid token
     let result = layer
         .wrap(&processor, create_test_input("invalid_token"))
