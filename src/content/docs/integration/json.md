@@ -8,7 +8,8 @@ Shizuku provides JSON serialization support through the `json` feature flag. Thi
 
 Add the `json` feature to your Shizuku dependency in `Cargo.toml`:
 
-```toml
+```toml ins="\"json\""
+// Cargo.toml
 [dependencies]
 shizuku = { version = "0.0.2-alpha.2", features = ["json"] }
 ```
@@ -21,7 +22,7 @@ The JSON integration provides two derive macros:
 
 ### Example
 
-```rust
+```rust ins="JsonByteSer, JsonByteDes"
 use serde::{Serialize, Deserialize};
 use shizuku::{JsonByteSer, JsonByteDes};
 
